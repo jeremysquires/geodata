@@ -1,0 +1,30 @@
+{
+  "name": "geodata",
+  "version": "1.0.0",
+  "description": "geographic data conversion",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeremysquires/geodata.git"
+  },
+  "keywords": [
+    "geo",
+    "mercator"
+  ],
+  "author": "Jeremy Squires",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jeremysquires/geodata/issues"
+  },
+  "homepage": "https://github.com/jeremysquires/geodata#readme",
+  "dependencies": {
+    "@mapbox/sphericalmercator": "^1.1.0",
+    "fs-extra": "^8.0.1"
+  },
+  "dev-dependencies": {
+    "jest": "^24.8.0"
+  }
+}
