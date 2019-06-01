@@ -20,14 +20,14 @@ const outPath = '.';
 
 // output templates
 const vessels = '{"vessels":[{\n';
-const positions = '	"positions": [{\n';
-const betweenPositions = '	}, {\n';
-const endPositions = '	}]\n';
+const positions = '  "positions": [{\n';
+const betweenPositions = '  }, {\n';
+const endPositions = '  }]\n';
 const betweenVessels = '}, {\n';
-const vesselString = name => `	"name": "${name}",\n`;
-const xString = x => `		"x": ${x},\n`;
-const yString = y => `		"y": ${y},\n`;
-const timestampString = timestamp => `		"timestamp": "${timestamp}Z"\n`;
+const vesselString = name => `  "name": "${name}",\n`;
+const xString = x => `    "x": ${x},\n`;
+const yString = y => `    "y": ${y},\n`;
+const timestampString = timestamp => `    "timestamp": "${timestamp}Z"\n`;
 const endVessels = '}]}\n';
 
 // input patterns
@@ -64,56 +64,55 @@ async function processLineByLine(fileName) {
   let y = '';
   rl.on('line', (line) => {
     // console.log(`Line from file: ${line}`);
-	debugger;
-	matches = idPat.exec(line);
-  	if (matches) {
-	  id = matches[1];
-	  if (vesselId === '') {
-	    vesselId = id;
-	  }
-	}
-	matches = vesselNamePat.exec(line);
-  	if (matches) {
-	  name = matches[1];
-	  if (name === '') {
-	    name = vesselId;
-	  }
-	  if (vesselName === '') {
-	    vesselName = name;
-  		outStream.write(vesselString(vesselName));
-  		outStream.write(positions);
-	  } else if (vesselName !== name) {
-	    vesselName = name;
-		// write out the end of the vessel
-  	    outStream.write(endPositions);
-  		outStream.write(betweenVessels);
-  		outStream.write(vesselString(vesselName));
-  		outStream.write(positions);
-	  } else {
-		// not at the end of vessel, so start a new position
-  	    outStream.write(betweenPositions);
-	  }
-	}
-	matches = dateTimePat.exec(line);
-  	if (matches) {
-	  timestamp = matches[1];
-	}
-	matches = lonPat.exec(line);
-  	if (matches) {
-	  lon = matches[1];
-	}
-	matches = latPat.exec(line);
-  	if (matches) {
-	  lat = matches[1];
-	  [x,y] = merc.forward([lon, lat]);
+  matches = idPat.exec(line);
+    if (matches) {
+    id = matches[1];
+    if (vesselId === '') {
+      vesselId = id;
+    }
+  }
+  matches = vesselNamePat.exec(line);
+    if (matches) {
+    name = matches[1];
+    if (name === '') {
+      name = vesselId;
+    }
+    if (vesselName === '') {
+      vesselName = name;
+      outStream.write(vesselString(vesselName));
+      outStream.write(positions);
+    } else if (vesselName !== name) {
+      vesselName = name;
+    // write out the end of the vessel
+        outStream.write(endPositions);
+      outStream.write(betweenVessels);
+      outStream.write(vesselString(vesselName));
+      outStream.write(positions);
+    } else {
+    // not at the end of vessel, so start a new position
+        outStream.write(betweenPositions);
+    }
+  }
+  matches = dateTimePat.exec(line);
+    if (matches) {
+    timestamp = matches[1];
+  }
+  matches = lonPat.exec(line);
+    if (matches) {
+    lon = matches[1];
+  }
+  matches = latPat.exec(line);
+    if (matches) {
+    lat = matches[1];
+    [x,y] = merc.forward([lon, lat]);
       outStream.write(xString(x / divideMetres));
-  	  outStream.write(yString(y / divideMetres));
-  	  outStream.write(timestampString(timestamp));
-	}
+      outStream.write(yString(y / divideMetres));
+      outStream.write(timestampString(timestamp));
+    }
   })
   .on('close', () => {
-  	outStream.write(endPositions);
-  	outStream.write(endVessels);
+    outStream.write(endPositions);
+    outStream.write(endVessels);
     console.log(`Finished writing: ${writeFilePath}`);
   });
 }
