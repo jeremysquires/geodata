@@ -1,26 +1,20 @@
 const fs = require('fs-extra');
 const path = require('path');
 const readline = require('readline');
+const parseArgs = require('minimist');
 const SphericalMercator = new require('@mapbox/sphericalmercator');
-
 const merc = new SphericalMercator({
     size: 256
 });
+const argv = parseArgs(process.argv.slice(2), opts={});
 
 let lat = -87.42461;
 let lon = 30.31141;
 let x = 0;
 let y = 0;
 
-// [x,y] = merc.forward([lat, lon]);
-
-// console.log(`x: ${x}, y: ${y}`);
-
-const dataPath = '/home/jer/Data/AIS/AIS_ASCII_by_UTM_Month/2017';
-const loadFiles = [
-  'head1000.json',
-  'head100000.json'
-];
+const dataPath = '.';
+const loadFiles = argv._.length ? argv._ : [];
 const outPath = '.';
 
 // output templates
@@ -45,7 +39,7 @@ const latPat = /^\s+([-]?\d+[\.]?\d*)$/;
 async function processLineByLine(fileName) {
   const readFilePath = path.join(dataPath, fileName);
   const inStream = fs.createReadStream(readFilePath);
-  const outFileName = `out_${fileName}`;
+  const outFileName = argv.o || `out_${fileName}`;
   const writeFilePath = path.join(outPath, outFileName);
   const outStream = fs.createWriteStream(writeFilePath, { flags: 'a'});
   outStream.write(vessels);
@@ -124,6 +118,4 @@ async function processLineByLine(fileName) {
 }
 
 loadFiles.forEach(file => processLineByLine(file));
-// outStream.close();
-// inStream.close();
 
