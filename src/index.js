@@ -9,8 +9,8 @@ const merc = new SphericalMercator({
 const argv = parseArgs(process.argv.slice(2), opts={});
 const divideMetres = argv.u ? parseInt(argv.u) : 1000;
 
-let lat = -87.42461;
-let lon = 30.31141;
+let lon = -87.42461;
+let lat = 30.31141;
 let x = 0;
 let y = 0;
 
@@ -105,7 +105,7 @@ async function processLineByLine(fileName) {
 	matches = latPat.exec(line);
   	if (matches) {
 	  lat = matches[1];
-	  [x,y] = merc.forward([lat, lon]);
+	  [x,y] = merc.forward([lon, lat]);
       outStream.write(xString(x / divideMetres));
   	  outStream.write(yString(y / divideMetres));
   	  outStream.write(timestampString(timestamp));
