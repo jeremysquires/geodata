@@ -25,7 +25,9 @@ async function processLineByLine(fileName) {
   const outFileName = argv.o || `out_${fileName}`;
   const writeFilePath = path.join(outPath, outFileName);
   const outStream = fs.createWriteStream(writeFilePath, { flags: 'a'});
-  outStream.write(initString);
+  if (!argv.ndjson || argv.ndjson !== 'true') {
+    outStream.write(initString);
+  }
 
   const rl = readline.createInterface({
     input: inStream,
@@ -69,7 +71,9 @@ async function processLineByLine(fileName) {
     });
   })
   .on('close', () => {
-  	outStream.write(endString);
+    if (!argv.ndjson || argv.ndjson !== 'true') {
+      outStream.write(endString);
+    }
     console.log(`Finished writing: ${writeFilePath}`);
   });
 }
