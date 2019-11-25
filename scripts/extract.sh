@@ -12,7 +12,6 @@ fi
 head -n 10 $HEADER ais_sorted.csv | grep -v == > h.csv
 node $GEODATASRC/csv2geojson.js -o h.json --lat LAT --lon LON --numeric-fields SOG,COG,Heading,Length,Width,Draft h.csv
 node $GEODATASRC/geojson2shipsim.js -o pos10.json h.json
-exit 1
 head -n 100 $HEADER ais_sorted.csv > h.csv
 node $GEODATASRC/csv2geojson.js -o h.json --lat LAT --lon LON --numeric-fields SOG,COG,Heading,Length,Width,Draft h.csv
 node $GEODATASRC/geojson2shipsim.js -o pos100.json h.json
