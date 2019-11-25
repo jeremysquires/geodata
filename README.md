@@ -2,19 +2,32 @@
 
 Process AIS - Automatic Identification System ship positioning data into a truncated format for input to [shipsim](https://github.com/jeremysquires/shipsim) ship simulator as a load test.
 
+The command line tool csv2geojson provided here is intended as a replacement for [csv2geojson](http://mapbox.github.io/csv2geojson/) from mapbox for datasets that are too large for that tool to perform well against. A few extra features are added. TODO: Rename this tool so it's name does not collide with mapbox's tool.
+
 ## Quick Start
 
 * Download one of the CSV format AIS datasets and unzip it
-  - [USA AIS Data](https://marinecadastre.gov/ais/) post 2015 is in CSV
-  - Convert one of the other formats to CSV using GDAL as described below
-* Install http://mapbox.github.io/csv2geojson/
-  - `npm install --global @mapbox/csv2geojson`
+  * [USA AIS Data](https://marinecadastre.gov/ais/) post 2015 is in CSV
+  * Convert one of the other formats to CSV using GDAL as described below
 * Download or clone this repo
-  - `git clone git@github.com:jeremysquires/geodata.git`
+  * `git clone git@github.com:jeremysquires/geodata.git`
 * Copy the scripts into the folder with the dataset and run them
-  - `cp scripts/*.sh <data_folder>`
-  - `./prep.sh` (pulls out the header, sorts, and gzips)
-  - `./extract.sh` (pulls varying numbers of lines out and converts them)
+  * `cp scripts/*.sh <data_folder>`
+  * `./prep.sh <input_csv_file>`
+    * pulls out the header, sorts, and gzips ais_sorted.csv
+  * `./extract.sh`
+    * pulls varying numbers of lines out of ais_sorted.csv and converts them to geojson
+
+## csv2geojson Command Line
+
+All command line arguments for [csv2geojson](http://mapbox.github.io/csv2geojson/) are passed to the tool.
+
+Additional command line arguments:
+
+* `-o <output_filename>`
+  * open an output file for all output
+* `--ndjson=true|false`
+  * output newline delimited json
 
 ## Background
 
