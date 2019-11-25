@@ -9,7 +9,7 @@ if [ ! -f $HEADER ]; then
   HEADER=$GEODATASCRIPTS/header.csv
 fi
 
-head -n 10 $HEADER ais_sorted.csv > h.csv
+head -n 10 $HEADER ais_sorted.csv | grep -v == > h.csv
 node $GEODATASRC/csv2geojson.js -o h.json --lat LAT --lon LON --numeric-fields SOG,COG,Heading,Length,Width,Draft h.csv
 node $GEODATASRC/geojson2shipsim.js -o pos10.json h.json
 exit 1

@@ -49,3 +49,13 @@ Once the data is in CSV format, converting it to GeoJSON or some other format is
 * [USA AIS Data](https://marinecadastre.gov/ais/)
 * [Australian AIS Data](https://en.wikipedia.org/wiki/Automatic_identification_system)
 
+## Additional Tools
+
+If [Newline Delimitted JSON](http://ndjson.org/) is required, install some tools to handle that.
+
+* [geojson2ndjson](https://www.npmjs.com/package/geojson2ndjson)
+  * Command line tool for converting to and from JSONL/NDJSON and GeoJSON
+  * `npm install -g geojson2ndjson`
+* [ndjson-cli](https://www.npmjs.com/package/ndjson-cli)
+  * Command line tool for handling JSONL/NDJSON
+  * `npm install -g ndjson-cli`
