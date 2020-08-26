@@ -18,6 +18,11 @@ const endString = `
   ]
 }
 `;
+const ndlineInitString = `[
+`;
+const ndlineEndString = `
+]
+`;
 
 async function processLineByLine(fileName) {
   const readFilePath = path.join(dataPath, fileName);
@@ -28,7 +33,7 @@ async function processLineByLine(fileName) {
   if (!argv.ndjson || argv.ndjson !== 'true') {
     outStream.write(initString);
   } else {
-    outStream.write('[');
+    outStream.write(ndlineInitString);
   }
 
   const rl = readline.createInterface({
@@ -76,6 +81,8 @@ async function processLineByLine(fileName) {
   .on('close', () => {
     if (!argv.ndjson || argv.ndjson !== 'true') {
       outStream.write(endString);
+    } else {
+      outStream.write(ndlineEndString);
     }
     console.log(`Finished writing: ${writeFilePath}`);
   });
