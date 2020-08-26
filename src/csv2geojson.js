@@ -27,6 +27,8 @@ async function processLineByLine(fileName) {
   const outStream = fs.createWriteStream(writeFilePath, { flags: 'a'});
   if (!argv.ndjson || argv.ndjson !== 'true') {
     outStream.write(initString);
+  } else {
+    outStream.write('[');
   }
 
   const rl = readline.createInterface({
@@ -39,6 +41,7 @@ async function processLineByLine(fileName) {
   let headerLine = '';
   let processLine = '';
   let count = 0;
+  outStream.write('[');
   rl.on('line', (line) => {
     // console.log(`Line from file: ${line}`);
     if (headerLine === '') {
