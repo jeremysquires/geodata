@@ -26,8 +26,10 @@ Additional command line arguments:
 
 * `-o <output_filename>`
   * open an output file for all output
-* `--ndjson=true|false`
+* `--ndjson <true|false>`
   * output newline delimited json
+* `--alt <altitude_field>`
+  * adds an altitude coordinate to the geojson coords
 
 ## Background
 
