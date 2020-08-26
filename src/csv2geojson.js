@@ -18,6 +18,11 @@ const endString = `
   ]
 }
 `;
+const ndlineInitString = `[
+`;
+const ndlineEndString = `
+]
+`;
 
 async function processLineByLine(fileName) {
   const readFilePath = path.join(dataPath, fileName);
@@ -27,6 +32,8 @@ async function processLineByLine(fileName) {
   const outStream = fs.createWriteStream(writeFilePath, { flags: 'a'});
   if (!argv.ndjson || argv.ndjson !== 'true') {
     outStream.write(initString);
+  } else {
+    outStream.write(ndlineInitString);
   }
 
   const rl = readline.createInterface({
@@ -55,7 +62,11 @@ async function processLineByLine(fileName) {
       numericFields: argv['numeric-fields']
     }, function(err, data) {
       if (err) console.error(JSON.stringify(err, null, 2));
-      if (argv.line) data = csv2geojson.toLine(data)
+      if (argv.line) data = csv2geojson.toLine(data);
+      // add altitude if specified
+      if (argv.alt && data.features.length > 0 && data.features[0].properties[argv.alt] && data.features[0].geometry.coordinates.length === 2) {
+        data.features[0].geometry.coordinates.push(data.features[0].properties[argv.alt]);
+      }
       const dataLineString = JSON.stringify(data, null, 2);
       // remove first three lines, last two lines, 
       // removes last CR, and write
@@ -73,6 +84,8 @@ async function processLineByLine(fileName) {
   .on('close', () => {
     if (!argv.ndjson || argv.ndjson !== 'true') {
       outStream.write(endString);
+    } else {
+      outStream.write(ndlineEndString);
     }
     console.log(`Finished writing: ${writeFilePath}`);
   });
